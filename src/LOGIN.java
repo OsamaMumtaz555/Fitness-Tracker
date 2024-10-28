@@ -37,7 +37,7 @@ public class LOGIN extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         jLabel1.setFont(new java.awt.Font("Stencil", 1, 36)); // NOI18N
         jLabel1.setText("SIGN IN");
@@ -142,34 +142,31 @@ public class LOGIN extends javax.swing.JFrame {
     // Check credentials against the database
     if (isValid) {
         try {
-            Class.forName("com.mysql.jdbc.Driver"); // Use the updated JDBC driver
-            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/fitness tracker", "root", "")) {
-                // Use a PreparedStatement to prevent SQL injection
-                String selectQuery = "SELECT * FROM user WHERE username = ? AND password = ?";
-                try (PreparedStatement pstmt = con.prepareStatement(selectQuery)) {
-                    pstmt.setString(1, username);
-                    pstmt.setString(2, password);
+        // Use Singleton instance for database connection
+        Connection con = DatabaseConnection.getInstance().getConnection();
+        
+        String query = "SELECT id FROM user WHERE username = ? AND password = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
 
-                    // Execute the select query
-                    ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String id = rs.getString("id");  // Retrieve the User_ID
+                JOptionPane.showMessageDialog(this, "Sign-in successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-                    if (rs.next()) {
-                        // Successful sign in
-                        JOptionPane.showMessageDialog(this, "Sign-in successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        // Proceed to the next screen or functionality
-                    } else {
-                        // Invalid credentials
-                        JOptionPane.showMessageDialog(this, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            } catch (SQLException e) {
-                System.out.println("SQL Exception: " + e.getMessage());
-                JOptionPane.showMessageDialog(this, "Database connection error. Please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
+                // Pass both username and ID to First_Page
+                HomePage fp = new HomePage(id);
+                fp.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (ClassNotFoundException e) {
-            System.out.println("MySQL JDBC Driver not found.");
-            JOptionPane.showMessageDialog(this, "Database driver not found. Please contact support.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    } catch (SQLException e) {
+        System.out.println("SQL Exception: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Database connection error. Please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }
         
     }//GEN-LAST:event_jButton1ActionPerformed
