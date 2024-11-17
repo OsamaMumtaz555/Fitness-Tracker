@@ -66,7 +66,8 @@ public class Sign_Up extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Stencil", 0, 12)); // NOI18N
         jLabel5.setText("CONFIRM PASSWORD");
 
-        jButton1.setFont(new java.awt.Font("Stencil", 1, 14)); // NOI18N
+        jButton1.setBackground(new java.awt.Color(153, 153, 255));
+        jButton1.setFont(new java.awt.Font("Stencil", 0, 14)); // NOI18N
         jButton1.setText("SIGN UP");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -54,6 +54,7 @@ public class LOGIN extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Stencil", 0, 12)); // NOI18N
         jLabel3.setText("PASSWORD");
 
+        jButton1.setBackground(new java.awt.Color(153, 153, 255));
         jButton1.setFont(new java.awt.Font("Stencil", 0, 14)); // NOI18N
         jButton1.setText("LOGIN");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
